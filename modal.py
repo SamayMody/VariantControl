@@ -1,9 +1,12 @@
 from pydantic import BaseModel
+from typing import List
+
+class Variants(BaseModel):
+    id : int
+    size: str
+    color: str
+    material: str
 
 class Product(BaseModel):
     Product: str
-
-class Variants(BaseModel):
-    Size: str
-    Color: str
-    Material: str
+    Variants: List[Variants]

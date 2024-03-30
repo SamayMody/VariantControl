@@ -1,30 +1,47 @@
 from fastapi import FastAPI
+from bson import ObjectId
+from typing import List
 import db
-from modal import Product, Variants
+from modal import Product , Variants
+
 
 app = FastAPI()
 
 @app.post("/upload/product")
-def product_info(data1: Product, data2: Variants):
-    id = db.create(data1, data2)
-    return id
+def product_info(data: Product):
+    id = db.create(data)
+    return {"message": "Product uploaded successfully", "id": str(id)}
 
-@app.get("/get/byproduct")
-def product(product_name: str):
-    data = db.get_product(product_name)
+@app.get("/get/product")
+def getting_by_product(product_name: str):
+    data = db.get_by_product(product_name)
+    if data:
+        return data
+    else:
+        return {"message": "No such Product is available for the moment"}
+
+@app.get("/get/variants")
+def getting_by_variants( size: str, color: str, material: str):
+    data = db.get_by_variant( size, color, material)
+    if data:
+        return data
+    else:
+        return {"message": "No such variant is available for the moment"}
+
+@app.put("/update/product")
+def updating_product(product: str, id: int, variants: Variants):
+    data = db.update(product, id , variants)
     return data
 
-@app.get("/get/byvariant")
-def variants(Size: str , Color: str , Material: str):
-    data = db.get_product_variant(Size,Color,Material)
+@app.delete("/delete/product/variant")
+def deleting_product_variant(product: str, id: int):
+    data = db.delete_variant(product, id)
     return data
 
-@app.put("/update/product_variant")
-def update(id: str, data1: Product , data2: Variants):
-    data = db.update(id, data1, data2)
-    return {"updated": True, "data": data}
-
-@app.delete("/delete/product")
-def delete_product(id: str):
-    data = db.delete(id)
-    return {"deleted": True , "data": data}
+@app.delete("/delete/product/{product}")
+def deleting_product(product: str):
+    data = db.delete_product(product)
+    if data == 1:
+        return {"deleted": True, "message": f"Product '{product}' deleted successfully"}
+    else:
+        return {"deleted": False, "message": f"Product '{product}' not found"}
