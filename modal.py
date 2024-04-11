@@ -1,8 +1,8 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List , Optional
 
 class Variants(BaseModel):
-    id : int
+    id : Optional[int]
     size: str
     color: str
     material: str
@@ -10,3 +10,8 @@ class Variants(BaseModel):
 class Product(BaseModel):
     Product: str
     Variants: List[Variants]
+
+class UpdateVariant(BaseModel):
+    size: str
+    color: str
+    material: str

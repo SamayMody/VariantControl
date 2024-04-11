@@ -1,8 +1,6 @@
 from fastapi import FastAPI
-from bson import ObjectId
-from typing import List
 import db
-from modal import Product , Variants
+from modal import Product, Variants, UpdateVariant
 
 
 app = FastAPI()
@@ -21,15 +19,16 @@ def getting_by_product(product_name: str):
         return {"message": "No such Product is available for the moment"}
 
 @app.get("/get/variants")
-def getting_by_variants( size: str, color: str, material: str):
-    data = db.get_by_variant( size, color, material)
+def getting_by_variants(size: str, color: str, material: str):
+    data = db.get_by_variant(size, color, material)
     if data:
         return data
     else:
         return {"message": "No such variant is available for the moment"}
 
+
 @app.put("/update/product")
-def updating_product(product: str, id: int, variants: Variants):
+def updating_product(product: str, id: int, variants: UpdateVariant):
     data = db.update(product, id , variants)
     return data
 

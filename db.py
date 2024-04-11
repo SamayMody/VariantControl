@@ -28,7 +28,7 @@ def get_by_product(condition):
     return data
 
 def get_by_variant(size, color, material):
-    response = collection.find({ "Variants": {"size": size, "color": color, "material": material}})
+    response = collection.find({"Variants.size": size, "Variants.color": color, "Variants.material": material})
     data = []
     for i in response:
         data.append({"_id": str(i["_id"]), "Product": i["Product"]})
