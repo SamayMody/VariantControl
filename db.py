@@ -50,6 +50,19 @@ def update(product, id, variants):
     )
     return response.modified_count
 
+# def update(product, id , size , color , material):
+#     response = collection.update_one({"Product": product , "Variants.id": id},
+#                                      {"$set": {"Variants.$.size": size,
+#                                                "Variants.$.color": color,
+#                                                "Variants.$.material": material
+#                                                }}
+#                                      )
+#     return response.modified_count
+
+def addtoset(product, id,  size , color , material):
+    response = collection.update_one({"Product": product}, {"$addToSet":{"Variants":{"id": id, "size": size , "color": color , "material": material}}})
+    return response.modified_count
+
 def delete_variant(product, id):
     response = collection.update_one(
         {"Product": product},

@@ -1,8 +1,8 @@
 from pydantic import BaseModel
-from typing import List , Optional
+from typing import List
 
 class Variants(BaseModel):
-    id : Optional[int]
+    id : int
     size: str
     color: str
     material: str

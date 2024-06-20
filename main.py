@@ -5,6 +5,10 @@ from modal import Product, Variants, UpdateVariant
 
 app = FastAPI()
 
+@app.get("/testing")
+def test():
+    return {"msg": "Hello"}
+
 @app.post("/upload/product")
 def product_info(data: Product):
     id = db.create(data)
@@ -30,6 +34,16 @@ def getting_by_variants(size: str, color: str, material: str):
 @app.put("/update/product")
 def updating_product(product: str, id: int, variants: UpdateVariant):
     data = db.update(product, id , variants)
+    return data
+
+# @app.put("/update/product")
+# def updating_product(product: str, id: int, size: str, color: str, material: str):
+#     data = db.update(product, id , size , color , material)
+#     return data
+
+@app.put("/update/addtoset")
+def addingtoset(product: str, id: int, size: str , color: str , material: str):
+    data = db.addtoset(product, id, size, color, material)
     return data
 
 @app.delete("/delete/product/variant")
